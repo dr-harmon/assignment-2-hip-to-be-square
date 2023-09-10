@@ -17,24 +17,52 @@ bool Square::operator==(const Square& other) const
 
 LetterGrid::LetterGrid(string input)
 {
+    vector<char> row;
+
+    for (int i = 0; i < input.size(); i++) {
+        if (input[i] == ' ') {
+            grid.push_back(row);
+            row.clear();
+        } else {
+            row.push_back(input[i]);
+        }
+    }
+
+    grid.push_back(row);
 }
 
 int LetterGrid::getRowCount() const
 {
-    return 0;
+    return grid.size();
 }
 
 int LetterGrid::getColumnCount() const
 {
-    return 0;
+    return grid[0].size();
 }
 
 char LetterGrid::getLetterAt(int row, int column) const
 {
-    return 0;
+    return grid[row][column];
 }
 
 vector<Square> LetterGrid::getValidSquares() const
 {
-    return vector<Square>();
+    vector<Square> squares;
+
+    for (int row = 0; row < getRowCount(); row++) {
+        for (int column = 0; column < getColumnCount(); column++) {
+            int maxLength = min(getRowCount() - row, getColumnCount() - column) - 1;
+            char letter = getLetterAt(row, column);
+            for (int length = 1; length <= maxLength; length++) {
+                if (getLetterAt(row + length, column         ) == letter &&
+                    getLetterAt(row + length, column + length) == letter &&
+                    getLetterAt(row         , column + length) == letter) {
+                        squares.push_back(Square(row, column, length));
+                    }
+            }
+        }
+    }
+
+    return squares;
 }

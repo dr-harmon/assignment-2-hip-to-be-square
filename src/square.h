@@ -19,6 +19,7 @@ public:
 
 // A rectangular grid with one letter at each position.
 class LetterGrid {
+    std::vector< std::vector<char> > grid;
 public:
     // Initializes a new letter grid with the given string. The string must be formatted
     // such that the first characters represent the first row of the grid (only upper case
