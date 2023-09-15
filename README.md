@@ -75,6 +75,45 @@ In the file `ANALYSIS.md`, answer the following questions:
 
 For each question, briefly justify your answer in 1-2 sentences.
 
+### Hint: Use Tight Bounds
+
+Asymptotic notation should be stated as tightly as possible. Consider this code:
+
+    for (int i = 0; i < n; i++) { ... }
+
+It is completely correct to say that the above code is `O(n³)` because a linear algorithm grows no faster asymptotically than a cubic one. However, `O(n³)` is not a tight bound and should be expressed more accurately for this code as `O(n)`.
+
+You will know when your asymptotic notation is "tight enough" when it cannot be expressed as a slower-growing function of the seven functions used in the textbook (Table 4.1). For example, if you claim an algorithm's time complexity is `O(n log n)`, but it can be shown that the algorithm actually runs in linear time, this is not a tight-enough bound because `O(n)` is one of the seven functions and it is "less than" `O(n log n)`.
+
+### Hint: Consider Loop Limits Carefully
+
+When analyzing the time complexity of a function, it is tempting to look at the code structure alone and ignore loop limits. Consider this code:
+
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            for (int k = 0; k < n; k++) {
+                ...
+            }
+        }
+    }
+
+This triply-nested loop has a time complexity of `O(n³)`. Now consider this code:
+
+    const int MAX_X = 1000000;
+    const int MAX_Y = 1000000;
+    const int MAX_Z = 1000000;
+    for (int i = 0; i < MAX_X; i++) {
+        for (int j = 0; j < MAX_Y; j++) {
+            for (int k = 0; k < MAX_Z; k++) {
+                ...
+            }
+        }
+    }
+
+This is also a triply-nested loop, but its time complexity is _not_ `O(n³)`. It is actually constant-time (`O(1)`) because the number of operations performed does not vary as a function of `n`. In this case, the constant is likely impractically large but it is constant nonetheless.
+
+When analyzing the time complexity of `getValidSquares`, be sure to consider the loop bounds in your code. Depending on how you chose to implement the function, its code structure may mislead you to an incorrect bound (or at least, one that is not tight enough).
+
 ## Part 4: Algorithm Benchmarking
 
 To support your time complexity analysis in Part 3, conduct an experiment to observe the performance of `getValidSquares`. You can use the `Benchmark` unit test in `square_test.cpp` to assist with this effort. By default, it defines 10 benchmarks with increasing grid sizes: 10x10, 20x20, etc. (Feel free to adjust the grid sizes if needed to account for the speed of your computer.)
